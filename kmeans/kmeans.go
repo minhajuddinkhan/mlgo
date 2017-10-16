@@ -54,7 +54,6 @@ func (kma *KmeansAlgo) Iterate() {
 		kma.clusters[centroid] = cluster
 
 	}
-	fmt.Println("Clusters after iteration", kma.clusters)
 
 }
 
@@ -85,7 +84,6 @@ func returnSmallestIndex(x []int) int {
 func (kma *KmeansAlgo) reArrageCentroids() []int {
 	centroids := []int{}
 	for _, ctr := range kma.clusters {
-		fmt.Println("cluster", ctr)
 		sum := 0
 		for _, v := range ctr {
 			sum += v
