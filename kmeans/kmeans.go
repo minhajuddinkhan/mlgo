@@ -31,6 +31,7 @@ func (kma *KmeansAlgo) RandomCentroids(num int) *KmeansAlgo {
 		i++
 	}
 	kma.centroids = centroids
+	fmt.Println("RANDOM CENTROIDS", kma.centroids)
 	return kma
 }
 
@@ -45,6 +46,9 @@ func (kma *KmeansAlgo) SetCentroids(centroids []int) (*KmeansAlgo, error) {
 
 func (kma *KmeansAlgo) Iterate() {
 
+	for k := range kma.clusters {
+		delete(kma.clusters, k)
+	}
 	for _, data := range kma.dataSet {
 		diff := euc(data, kma.centroids)
 		index := returnSmallestIndex(diff)
