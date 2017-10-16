@@ -20,8 +20,8 @@ func Initialize(k int, dataSet []int) *KmeansAlgo {
 	return &KmeansAlgo{k, dataSet, nil, make(map[int][]int)}
 }
 
-//RandomCentroids selects random centroids
-func (kma *KmeansAlgo) RandomCentroids(num int) *KmeansAlgo {
+//InitialRandomCentroids selects random centroids
+func (kma *KmeansAlgo) InitialRandomCentroids(num int) *KmeansAlgo {
 	i := 0
 	centroids := []int{}
 
@@ -31,12 +31,11 @@ func (kma *KmeansAlgo) RandomCentroids(num int) *KmeansAlgo {
 		i++
 	}
 	kma.centroids = centroids
-	fmt.Println("RANDOM CENTROIDS", kma.centroids)
 	return kma
 }
 
-//SetCentroids set user given centroids
-func (kma *KmeansAlgo) SetCentroids(centroids []int) (*KmeansAlgo, error) {
+//SetInitialCentroids set user given centroids
+func (kma *KmeansAlgo) SetInitialCentroids(centroids []int) (*KmeansAlgo, error) {
 	if len(centroids) != kma.k {
 		return nil, fmt.Errorf("cannot set more centroids")
 	}
@@ -44,11 +43,17 @@ func (kma *KmeansAlgo) SetCentroids(centroids []int) (*KmeansAlgo, error) {
 	return kma, nil
 }
 
-func (kma *KmeansAlgo) Iterate() {
+func (kma *KmeansAlgo) emptyClusters() {
 
 	for k := range kma.clusters {
 		delete(kma.clusters, k)
 	}
+
+}
+
+func (kma *KmeansAlgo) Iterate() {
+
+	kma.emptyClusters()
 	for _, data := range kma.dataSet {
 		diff := euc(data, kma.centroids)
 		index := returnSmallestIndex(diff)
@@ -56,7 +61,6 @@ func (kma *KmeansAlgo) Iterate() {
 		cluster := kma.clusters[centroid]
 		cluster = append(cluster, data)
 		kma.clusters[centroid] = cluster
-
 	}
 
 }
@@ -97,15 +101,25 @@ func (kma *KmeansAlgo) reArrageCentroids() []int {
 	return centroids
 }
 
+//Run executes the algorithm.
 func (kma *KmeansAlgo) Run(max int) (map[int][]int, error) {
 
-	//	done := false
+	done := true
 	if len(kma.centroids) == 0 {
 		return nil, fmt.Errorf("cannot execute with zero centroids")
 	}
 	for i := 0; i < max; i++ {
 		kma.Iterate()
-		kma.centroids = kma.reArrageCentroids()
+
+		newCentroids := kma.reArrageCentroids()
+		for i, v := range newCentroids {
+			if v != kma.centroids[i] {
+				done = false
+			}
+		}
+		if done {
+			break
+		}
 	}
 
 	return kma.clusters, nil

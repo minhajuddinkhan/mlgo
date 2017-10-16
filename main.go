@@ -7,11 +7,13 @@ import (
 )
 
 var (
-	dataSet = []int{1, 3, 5, 7, 543, 3, 12, 54, 1, 3, 123, 54, 65, 4, 2, 12, 32, 43, 54, 9}
+	dataSet = []int{1, 3, 5, 7, 43, 3, 12, 54, 1, 3, 23, 54, 65, 4, 2, 12, 32, 43, 54, 9, 21, 1, 23, 43, 11}
 )
 
 func main() {
-	algo := km.Initialize(3, dataSet).RandomCentroids(3)
-	clusters, _ := algo.Run(2)
-	fmt.Println(clusters)
+	algo := km.Initialize(3, dataSet).InitialRandomCentroids(4)
+	clusters, _ := algo.Run(50)
+	for k, v := range clusters {
+		fmt.Println(k, v)
+	}
 }
