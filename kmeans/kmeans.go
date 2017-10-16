@@ -22,11 +22,12 @@ func Initialize(k int, dataSet []int) *KmeansAlgo {
 
 //RandomCentroids selects random centroids
 func (kma *KmeansAlgo) RandomCentroids(num int) *KmeansAlgo {
-	var i int
+	i := 0
 	centroids := []int{}
 
 	for i < num {
-		centroids = append(centroids, getRandomNumber(kma.dataSet))
+		seed := getRandomNumber(kma.dataSet)
+		centroids = append(centroids, seed)
 		i++
 	}
 	kma.centroids = centroids
@@ -51,7 +52,10 @@ func (kma *KmeansAlgo) Iterate() {
 		cluster := kma.clusters[centroid]
 		cluster = append(cluster, data)
 		kma.clusters[centroid] = cluster
+
 	}
+	fmt.Println("Clusters after iteration", kma.clusters)
+
 }
 
 func euc(data int, centroids []int) []int {
@@ -79,8 +83,9 @@ func returnSmallestIndex(x []int) int {
 }
 
 func (kma *KmeansAlgo) reArrageCentroids() []int {
-	centroids := kma.centroids
+	centroids := []int{}
 	for _, ctr := range kma.clusters {
+		fmt.Println("cluster", ctr)
 		sum := 0
 		for _, v := range ctr {
 			sum += v
@@ -98,22 +103,7 @@ func (kma *KmeansAlgo) Run(max int) (map[int][]int, error) {
 	}
 	for i := 0; i < max; i++ {
 		kma.Iterate()
-		newCentroids := kma.reArrageCentroids()
-		fmt.Println("kmacentroids", kma.centroids)
-		fmt.Println("newCentroids", newCentroids)
-		// for i, v := range kma.centroids {
-		// 	if v == newCentroids[i] {
-		// 		done = true
-
-		// 	}
-
-		// }
-
-		// if !done {
-		// 	kma.centroids = newCentroids
-		// } else {
-		// 	break
-		// }
+		kma.centroids = kma.reArrageCentroids()
 	}
 
 	return kma.clusters, nil

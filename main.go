@@ -12,6 +12,6 @@ var (
 
 func main() {
 	algo := km.Initialize(3, dataSet).RandomCentroids(3)
-	clusters, _ := algo.Run(9)
+	clusters, _ := algo.Run(6)
 	fmt.Println(clusters)
 }
