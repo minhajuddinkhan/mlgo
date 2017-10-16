@@ -51,12 +51,12 @@ func (kma *KmeansAlgo) emptyClusters() {
 
 }
 
-func (kma *KmeansAlgo) Iterate() {
+func (kma *KmeansAlgo) iterate() {
 
 	kma.emptyClusters()
 	for _, data := range kma.dataSet {
 		diff := euc(data, kma.centroids)
-		index := returnSmallestIndex(diff)
+		index := min(diff)
 		centroid := kma.centroids[index]
 		cluster := kma.clusters[centroid]
 		cluster = append(cluster, data)
@@ -65,6 +65,7 @@ func (kma *KmeansAlgo) Iterate() {
 
 }
 
+// finds eucledian distance. mock for now.
 func euc(data int, centroids []int) []int {
 
 	differences := []int{}
@@ -79,7 +80,7 @@ func euc(data int, centroids []int) []int {
 	return differences
 }
 
-func returnSmallestIndex(x []int) int {
+func min(x []int) int {
 	m := 0
 	for i := 0; i < len(x); i++ {
 		if x[i] < x[m] {
@@ -109,7 +110,7 @@ func (kma *KmeansAlgo) Run(max int) (map[int][]int, error) {
 		return nil, fmt.Errorf("cannot execute with zero centroids")
 	}
 	for i := 0; i < max; i++ {
-		kma.Iterate()
+		kma.iterate()
 
 		newCentroids := kma.reArrageCentroids()
 		for i, v := range newCentroids {
