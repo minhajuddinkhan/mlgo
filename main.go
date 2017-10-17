@@ -1,19 +1,24 @@
 package main
 
 import (
-	"fmt"
-
 	km "github.com/minhajuddinkhan/mlgo/kmeans"
+	"github.com/minhajuddinkhan/mlgo/knn"
 )
 
 var (
-	dataSet = []int{1, 3, 5, 7, 43, 3, 12, 54, 1, 3, 23, 54, 65, 4, 2, 12, 32, 43, 54, 9, 21, 1, 23, 43, 11}
+	dataSet = []int{1, 3, 4, 6, 7, 8, 9}
 )
 
 func main() {
-	algo := km.Initialize(3, dataSet).InitialRandomCentroids(4)
-	clusters, _ := algo.Run(50)
-	for k, v := range clusters {
-		fmt.Println(k, v)
+	algo := km.Initialize(3, dataSet).InitialRandomCentroids()
+	clusters, _ := algo.Run(20)
+
+	classes := []int{}
+	for k, _ := range clusters {
+		classes = append(classes, k)
+		//		fmt.Println(k, v)
 	}
+
+	knn.Initialize(classes, clusters, 3, 15).Run()
+
 }

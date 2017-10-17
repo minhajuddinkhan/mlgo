@@ -21,11 +21,11 @@ func Initialize(k int, dataSet []int) *KmeansAlgo {
 }
 
 //InitialRandomCentroids selects random centroids
-func (kma *KmeansAlgo) InitialRandomCentroids(num int) *KmeansAlgo {
+func (kma *KmeansAlgo) InitialRandomCentroids() *KmeansAlgo {
 	i := 0
 	centroids := []int{}
 
-	for i < num {
+	for i < kma.k {
 		seed := getRandomNumber(kma.dataSet)
 		centroids = append(centroids, seed)
 		i++
