@@ -21,31 +21,52 @@ func (k *knn) Run() {
 		classes[key] = euc(k.input, v)
 
 	}
-	fmt.Println("cluster", k.dataSets)
-	fmt.Println("classes ", (classes))
 
-	candidates := make(map[int][]int)
-	selected := []int{}
-	for x := 0; x < k.k; x++ {
-		for key, v := range classes {
-			if len(v) > 0 {
+	fmt.Println("classes", classes)
+	results := []map[string]int{}
 
-				i := min(v)
-				candidates[key] = append(candidates[key], v[i])
-				v = append(v[:i], v[i+1:]...)
-			}
-			classes[key] = v
+	for key, v := range classes {
+		for _, i := range v {
+			obj := make(map[string]int)
+			obj["value"] = i
+			obj["key"] = key
+			results = append(results, obj)
 		}
-		fmt.Println("cdd", candidates)
-
-		//j := min(candidates)
-		//selected = append(selected, candidates[j])
-		//candidates = append(candidates[:j], candidates[j+1:]...)
 	}
 
-	fmt.Println("selected", selected)
+	for index := (len(results) - 1); index >= 0; index-- {
+		for j := 1; j <= index; j++ {
+			if results[j-1]["value"] > results[j]["value"] {
+				temp := results[j-1]
+				results[j-1] = results[j]
+				results[j] = temp
+			}
+		}
+	}
 
-	//fmt.Println(classes)
+	i := 0
+	candidates := make(map[int]int)
+	for i < k.k {
+		if candidates[results[i]["key"]] == 0 {
+			candidates[results[i]["key"]] = 1
+		} else {
+			candidates[results[i]["key"]]++
+		}
+		i++
+	}
+
+	var max, clusterKey int
+	for key, v := range candidates {
+		max = v
+		clusterKey = key
+		if max > v {
+			max = v
+			clusterKey = key
+
+		}
+	}
+	k.dataSets[clusterKey] = append(k.dataSets[clusterKey], k.input)
+	fmt.Println(k.dataSets)
 
 }
 
@@ -73,11 +94,16 @@ func euc(data int, dataSet []int) []int {
 	return differences
 }
 
-func copyClasses(classes map[int][]int) map[int][]int {
-
-	nm := make(map[int][]int)
-	for k, v := range classes {
-		nm[k] = v
+func sort(ar []int) {
+	for i := 0; i < len(ar); i++ {
+		min := i
+		for j := i + 1; j < len(ar); j++ {
+			if ar[j] < ar[min] {
+				min = j
+			}
+		}
+		temp := ar[i]
+		ar[i] = ar[min]
+		ar[min] = temp
 	}
-	return nm
 }

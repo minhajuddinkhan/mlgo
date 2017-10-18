@@ -6,12 +6,12 @@ import (
 )
 
 var (
-	dataSet = []int{1, 3, 4, 6, 7, 8, 9}
+	dataSet = []int{1, 2, 34, 14, 26, 2, 42, 53, 4, 64, 6, 7, 21, 57, 67, 4, 4, 2, 43, 56, 6, 76, 7, 87, 8, 9}
 )
 
 func main() {
-	algo := km.Initialize(3, dataSet).InitialRandomCentroids()
-	clusters, _ := algo.Run(20)
+	algo := km.Initialize(5, dataSet).InitialRandomCentroids()
+	clusters, _ := algo.Run(1)
 
 	classes := []int{}
 	for k, _ := range clusters {
