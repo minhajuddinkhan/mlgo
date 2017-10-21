@@ -1,0 +1,33 @@
+Reworking a web app with React Native, Part 1: Troubleshooting Set Up
+After making good progress on a React web app that I’ve been working on, I decided to work on making it a native app. The application already integrates text message reminders (using the Twilio API), and I think it makes sense to work on building a mobile app, so that the user doesn’t have to use a desktop or laptop.
+Also, after my background in social services work, I’m particularly interested in building apps that are accessible. Many of the people I worked with in my previous job didn’t have a computer and having a smartphone was the ONLY way that they could get in touch if there was a problem, send emails, and look up and apply for programs from which they were interested in receiving assistance. That doesn’t even take into consideration the number of people that I worked with who didn’t have a smart phone. Building a React Native app is my first step in improving accessibility. Moving to an entirely SMS based texting option for users who don’t have reliable internet access is my next step after that.
+The documentation for getting started with React Native is pretty good, although getting everything installed turned out to be a little more time-consuming than I was originally anticipating. I decided to compile all of the terminal commands and information that I had to google into one place for easy reference.
+Here are the steps that I used to get everything installed so I could start building an app!
+First steps
+I followed the Quick Start documentation, which was a great starting point.
+I started by running
+npm install -g create-react-native-app
+create-react-native-app level   //level is the name of my app
+That took quite a while but overall worked smoothly, but when I got to actually running yarn start, I encountered some problems.
+Installing Watchman
+The terminal output directed me to view this discussion on the react native app issues page, or suggested installing watchman or running some sudo commands.
+I read over the issues page, and decided to investigate Watchman, which I’d never heard of before.
+“Watchman exists to watch files and record when they change. It can also trigger actions (such as rebuilding assets) when matching files change.”
+— https://facebook.github.io/watchman
+Okay, that seems like it would be helpful in this instance. To install watchman on OS X, first update your homebrew, and then install.
+brew update
+brew install watchman
+Download Expo
+While my homebrew was updating and watchman was installing, I downloaded the Expo app on my phone, which is an app for building React Native apps.
+I also downloaded Expo to my MacBook. When I opened the application, I could see that it had created the initial project, but I had two warnings that I needed to address.
+Check npm version
+The first was a pretty simple revert to an older version of my npm package, which you can run using
+npm install -g npm@4.6.1
+I checked to make sure the version reverted correctly
+Great!
+Quick Start with Expo
+After that, I checked out the documentation for Quick Start with Expo. It has a pretty different start process, which is literally just creating a new project via the app. I did this succesfully, and was able to cd to the project from my terminal, and use the QR scanner on my phone Expo app to open the project that’s running on mobile.
+Here’s what the default looks like on a mobile screen once you connect to your project
+Conclusion
+Overall, this was pretty successful, although I wish the documentation had been a little bit easier for me to understand if and how I could do this process from the terminal to build in React Native without using Expo. It seemed to me like React Native documentation for quick start, which directed me to use the Expo app on my phone didn’t really make sense, but I’m definitely going to be looking into if that’s true, or if I just didn’t understand the documentation well enough.
+Stay tuned for Part 2, as I work through building some static pages for my app, and then Part 3, when I tackle forms!

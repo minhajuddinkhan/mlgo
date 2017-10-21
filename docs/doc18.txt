@@ -1,0 +1,34 @@
+
+I’ve been working with React Native for quite a while now, both personally and professionally, and really enjoy it; in this article I will describe some patterns I use. Keep in mind that whatever works for a team, won’t necessarily work for another and that many of these examples won’t work by themselves (they are isolated parts of code).
+1. Keep most of your components stupid
+This is true for any React application. Your views and components should rely on props and callbacks while Container (smart) components should rely on state. I recommend using Redux, but in some applications you can get away using plain old setState. MobX is a great alternative too.
+2. Rely on callbacks
+When learning how to code iOS apps in Swift, I was taught to use the delegate pattern to decouple a View from its Behavior. In React Native, the same effect can be achieved via callbacks. Callbacks are simply Arrow Functions which can be passed to a component. The component has the responsibility to execute them, but doesn’t need to know what it’s actually doing.
+Most component should not have any behavior. Expose simple callbacks, they are like the public API of your components. You should know when they’ll be executed by reading their names. If you are developing an e-commerce app, for example, names like onSelectProduct or onProductAddedToShoppingCart are very declarative.
+When deciding whether to expose a callback or not, every time a component has some kind of user interaction, ask yourself this:
+Is this interaction only important for this particular component, or can it trigger changes in another part of the application? If the latter is your answer, then you should expose a callback.
+3. Keep your navigation stack away from your views
+For this particular application, we were able to migrate from React Native’s default Navigator, to NavigationExperimental, to React Navigation. Those changes involved a few lines of code. The idea is simple:
+Screens and Views are not the same. Your views should not have any knowledge of the Navigation Stack while Screens (or Routes, depending on what name you prefer) must know how to navigate and how to communicate with the Navigation Bar / TabBar. With this approach, your screens will simply wrap the actual Views with navigation-aware things. For example:
+
+As you can see, FavoritesView simply exposes an ‘onSelectFavorite’ callback and doesn’t care about what it actually does. FavoritesScreen uses that callback to tell the view to navigate to another screen. Therefore, this gives you the flexibility to replace the way your navigation stack works and provides a nice separation.
+4. Keep your callbacks chained together
+A very common pattern is to inject behavior into callbacks within Higher order Components (that’s what Redux’s mapStateToProps actually does), but many people forget that a public callback may be used in another part of the app (an outer component, for example).
+Every time one of your views exposes a callback which may be used in another part of your application (such as, mapStateToProps), first invoke the actual callback passed on props. This enables you to, for example, Navigate to a screen and also fetch some information to feed the next view.
+
+Following the previous example, if FavoritesScreen told FavoritesView to navigate to the FavoriteScreen when selecting a Favorite, Redux would honor that, but also invoke some Redux actions.
+As you may see, every realm knows how to handle its stuff: Screens know how to navigate, Connected Views know how to handle redux actions and Views are dumb, stateless and rely on their props.
+5. Keep your reducers simple and declarative
+Any developer should be able to view your reducer’s code and understand what it’s doing. In most cases, having one function per action type can increase readability.
+
+Composing your reducer functions with many one-line functions can give you greater flexibility and code reuse.
+6. Keep business logic out of your Reducers
+Your Redux store is not part of your business model, it’s a View Model. Treat it like such. Your reducer should only impact the store with changes, and you need to be highly confident of them. The less knowledge your Reducers have of your business rules, the simpler they’ll become.
+It’s not the best approach, but a better one to put your business logic in your action creators, specially if you use a middleware like Thunk. Sagas and Epics are great too.
+7. Keep platform-specific components to a minimum
+Don’t get me wrong, every platform has its own Design/UX language and in many cases you have to write different versions of a component. Remember that React Native’s motto is learn once, write anywhere, but first try not to rush into writing platform-specific components.
+In many cases, simple Style-changes and conditional operators are enough. I’ve created a simple helper function called platformSpecific which allows me to set styles according to a platform.
+
+It’s a really simple function, but incredibly useful. Later, someone mentioned that React Native ships with a Platform.select function which does exactly the same.
+Conclusion
+It doesn’t matter if you use these patterns or not. The most important thing I want to say is: Keep things simple and separated. That would increase productivity and allow easier testing. Many of these patterns achieve that.

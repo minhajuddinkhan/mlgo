@@ -1,28 +1,26 @@
 package knn
 
-import "fmt"
-
 type knn struct {
-	classes  []int
-	dataSets map[int][]int
-	k        int
-	input    int
+	classes    []int
+	DataSets   map[int][]int
+	k          int
+	input      int
+	Neighbours []int
 }
 
 func Initialize(classes []int, dataSets map[int][]int, K int, input int) *knn {
 
-	return &knn{classes, dataSets, K, input}
+	return &knn{classes, dataSets, K, input, nil}
 }
 
-func (k *knn) Run() {
+func (k *knn) Run() *knn {
 
 	classes := make(map[int][]int)
-	for key, v := range k.dataSets {
+	for key, v := range k.DataSets {
 		classes[key] = euc(k.input, v)
 
 	}
 
-	fmt.Println("classes", classes)
 	results := []map[string]int{}
 
 	for key, v := range classes {
@@ -46,7 +44,11 @@ func (k *knn) Run() {
 
 	i := 0
 	candidates := make(map[int]int)
+
 	for i < k.k {
+
+		k.Neighbours = append(k.Neighbours, results[i]["key"])
+
 		if candidates[results[i]["key"]] == 0 {
 			candidates[results[i]["key"]] = 1
 		} else {
@@ -65,9 +67,9 @@ func (k *knn) Run() {
 
 		}
 	}
-	k.dataSets[clusterKey] = append(k.dataSets[clusterKey], k.input)
-	fmt.Println(k.dataSets)
 
+	k.DataSets[clusterKey] = append(k.DataSets[clusterKey], k.input)
+	return k
 }
 
 func min(x []int) int {
@@ -92,18 +94,4 @@ func euc(data int, dataSet []int) []int {
 		differences = append(differences, diff)
 	}
 	return differences
-}
-
-func sort(ar []int) {
-	for i := 0; i < len(ar); i++ {
-		min := i
-		for j := i + 1; j < len(ar); j++ {
-			if ar[j] < ar[min] {
-				min = j
-			}
-		}
-		temp := ar[i]
-		ar[i] = ar[min]
-		ar[min] = temp
-	}
 }

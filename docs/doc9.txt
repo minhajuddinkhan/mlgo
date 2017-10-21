@@ -1,0 +1,49 @@
+An Intervention
+Why AngularJS is worse than a new ASP.NET WebForms.
+
+I have reached an inflection point. I have been developing software professionally since 2003 and thus far I have withheld judgement on much of the technology I have worked with, mindful of my inexperience. But I believe I have worked with software, and web applications in particular, long enough now to call the community out on this one.
+AngularJS is wrong-headed. Really.
+The Wrong Approach
+Libraries are to discussions down the pub as frameworks are to political parties. I thought the UNIX philosophy of small programs each with a single responsibility would win out in the emerging single page application (SPA) class of web-apps— particularly since most of the web development community use UNIX-based Macs.
+But not, it would seem, with AngularJS.
+Instead we have a large complicated framework that tries to cover all bases. For example, Angular brings with it a dependency injection container. As sure as eggs is eggs, within a few months a solution to this problem will be developed by a library developer that better fits the needs of your project (cf jQuery and Zepto). If you are using AngularJS and you want to take advantage of this new technology, the implicit coupling between Angular and the default implementation will make the transition difficult enough that you will continue with the existing solution and your application will be the worse for it.
+If you can't see yourself wanting to improve upon the DI container, then substitute in its place any one of the multitude AngularJS components — the same argument applies.
+Elsewhere, the UNIX philosophy has largely won-out, and this begs the question — why does AngularJS not follow this approach?
+Briefly, careerism. The AngularJS team want to create a new ecosystem in the way Microsoft did with ASP.NET WebForms — but unlike then, the team at Google is acting not out of commercialism, but a desire for job security.
+Hyperbole
+I have read a couple of books on Angular and listened to various podcasts and judging by the hyperbole, if you didn't know any better, you'd think the AngularJS team invented dependency injection and testable JavaScript some time in 2012. Furthermore, you'd believe that you actually need a framework like AngularJS to achieve them.
+In fact, you simply need to be mindful of where you are instantiating objects, and pass dependencies into constructor functions when they are instantiated. You don't need a framework for this. You just need a text editor.
+Injecting dependencies in this way inverts the dependency graph for free and goes a long way to making your code testable. The dynamic nature of JavaScript means that testing is trivial out of the box, but if you need additional support there are a bunch of tried-and-true mocking libraries to help you there too.
+Now you might be thinking at this point — AngularJS brings with it additional magic to inject your dependencies automatically. There are two problems with this — first, it is magical — making troubleshooting more complicated, and second, this is a solution looking for a problem.
+OK, without auto-wire-up of the dependency graph you have to explicitly instantiate your objects, but this is trivial and it is actually beneficial to have an explicit visual representation within your codebase of the dependency graph in your application — it highlights architectural problems to the development team and enables new developers to see the runtime layout of the application almost at a glance. So with this “helpful” component AngularJS brings to the table:
+a bunch of additional code for each client to download
+some additional complexity
+a masking of the dependency graph within your application
+As a developer, I don’t need this. Visitors to my site do not want to wait for it to download. And I have to use it if I am using AngularJS because it is a “framework”.
+Magic
+If I had to sum up AngularJS in three words I would say “complicates trivial problems”. The complexity in building single page web applications does not lie within two-way data binding (this is trivial), nor in dependency injection (likewise), nor even in implementing MV-whatever (again, trivial). No, the complexity comes principally from the following areas:
+client-side routing
+browser incompatibility
+templating
+testability
+client-side state management
+limitations of HTML
+performance
+security
+code organisation
+Routing, templating and browser incompatibilities are essentially solved problems via existing tried and tested libraries. Furthermore, browser incompatibility is increasingly irrelevant with automatic browser updates and better standards adherence. Testability comes down to basic code hygiene (DI, SRP yada yada) and there are numerous excellent testing libraries out there too.
+This leaves us with client-side state management, limitations of HTML, performance and security. None of which are addressed by AngularJS. And no, directives are not HTML done right — they are merely a declarative approach to componentization for user interface elements — which doesn't solve the underlying fact that HTML was originally developed for sharing physics papers.
+That said, if there is an area where AngularJS does contribute, it is code organisation — but like dependency injection, you don't need a framework for this, you just need a technical team who understand IIFEs.
+Naming
+People say the hardest task in software development is naming. Actually this is misattribution of the complexity. Difficulty in naming is an artefact of a more essential problem: humans find it very difficult to come up with meaningful abstractions for a given problem domain. Exhibit A: every object oriented piece of software you have ever worked with.
+AngularJS brings with it a domain specific language — transclusion, scope, directives, modules, factories and services. These are the abstractions AngularJS provides over and above HTML5, CSS3 and JavaScript to make our lives easier.
+Except they don’t.
+Witness the introduction of the frighteningly obscure “transclusion”. You could probably sum up AngularJS with this single word — it makes the inclusion of DOM fragments in your page sound novel and complicated — as opposed to being the crux of dynamic web development since its inception. The addition of this word to the vocabulary of the Web is unnecessary and speaks to the careerist rather than pragmatic approach of the project.
+Furthermore, the AngularJS team has decided to overload and redefine terms with well-established meanings in software development such as factory and service. The development team would rather create a little enclave where everything you thought you knew cannot be taken for granted — which is very useful for guarding against commoditization of the skill, but less so for those having to work with the framework to deliver an application because some higher-up has told you to.
+Last time around…
+ASP.NET WebForms tried the same thing back in 1999 and Microsoft had a great deal of success with that technology. Indeed you’d be forgiven for thinking that AngularJS is ASP.NET WebForms for the SPA age. You'd be forgiven, but you'd also be wrong.
+The ASP.NET WebForms team knew their use-case precisely — RAD form-driven business applications on the Web — and for that single use-case the technology worked a charm. They didn't really try to pretend otherwise — the clue was in the name.
+Latterly, as people started to develop more complex web apps, ASP.NET WebForms came in for a barrage of criticism from both within and outside the Microsoft development community for providing irreparably leaky abstractions over primitives like HTML. Microsoft’s somewhat-belated answer was, of course, the more flexible ASP.NET MVC (essentially aping Rails).
+And this time?
+Fast-forward fifteen years, and AngularJS is being positioned as the modern way to write SPAs which are by their very definition complex web applications. There is no need for a SPA if a simple server-driven application will suffice. And there is no need for a “framework” if the application is trivial.
+History has shown that for the very web applications at which AngularJS is targeted, leaky abstractions over underlying primitives hinder more than help. And this is why AngularJS is worse than a new ASP.NET WebForms.

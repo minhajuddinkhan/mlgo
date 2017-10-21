@@ -1,0 +1,27 @@
+Building a Form in React
+Building forms in React is a bit different than building simple forms in just HTML. But, once you get the hang of it these forms are extremely powerful.
+In this tutorial we’ll be building a simple form that will have two text inputs (one for password and one for username). We’re going to use state to manage inputs and data.
+So first, we’ll initialize our React application. I’m going to go ahead and write this tutorial purely in React, assuming you have your own setup for bundling and what not. I‘m going to assume that your using this as a piece of your React App and I’ll just export the LoginForm component.
+
+And that’s it you’re done. Good job. Simply titling the component LoginForm will execute the ReactMagicForms.jsx script bundled into React itself.
+haha just kidding
+Next up, we need to set our initial state in the constructor. Since I’m not using any props in this component we don’t need to use it as a parameter.
+
+When implementing the constructor for a React.Component subclass, you should call super(props) before any other statement. Otherwise, this.props will be undefined in the constructor, which can lead to bugs.
+React.Component#constructor — React docs
+After we do our super we set the initial state of username and password. Since the user hasn’t typed anything yet, we want empty values. Since both are going to be strings we just use empty strings.
+Now that we have our initial state and username values, we need to setup our form in our render method. For the sake of simplicity, I won’t be adding bootstrap or any other ‘styling’ to the page. I trust that if you’re already doing React and JS in general you have a fair understanding of HTML & CSS.
+
+Next up we need to add a few methods for managing the forms. We’re going to add two methods: a handleChange method for handling the input as the user types, and a handleSubmit method for handling the submitted data.
+We need to handle data using this in the two methods. When we use this in React we have to bind it to the method using it, or else it will return undefined.
+You have to be careful about the meaning of this in JSX callbacks. In JavaScript, class methods are not bound by default. If you forget to bind this.handleClick and pass it to onClick, this will be undefined when the function is actually called.
+Handling Events#gatsby — React docs
+
+The next part is where everything is going to start coming together. We’re going to write some logic for our handleChange and handleSubmit events, attach those to the elements necessary in our form, and then we’ll be good to go.
+
+So, for the handleChange event, we use the setState method to set the state of whatever the user is currently targeting, to the value they’re typing. So, for example, if the user types waffles into the username input, the current state of the username state will be waffles.
+After the state is set to the typed value in the input, and the form is submitted, the handleSubmit method will take the username and password variables from this.state (which is set via the handleChange). And lastly, to get everything working (thank you Brian Glaz), we attach our methods into our form. The handleSubmit gets attached to the <form> via a onSubmit attribute, and then the handleChange gets attached to the inputs via the onChange attribute.
+
+Then, you can use those variables with whatever method or package you’d like to submit. Here’s an example using axios:
+
+And that’s how to write a small bit of form logic. What’s nice about this way is you only need one handleChange event. Next blog post I write will be about form validation in React.

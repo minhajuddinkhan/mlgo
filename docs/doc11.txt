@@ -1,0 +1,65 @@
+Intro to React.js
+For the past few months I have been learning React.js by doing a lot of online courses, tutorials, going to workshops and most recently I attended the awesome React in Flip Flops course run by Maciej Nowakowski.
+I learnt a lot on the way and now I am putting together this tutorial with the aim of it being the one tutorial I wish I had when I first got started.
+This is the introduction tutorial of my series of ’’Intro to React.js’’.
+The best way to have a quick and reliable React boilerplate is to install create-react-app. To do so:
+npm install -g create-react-app
+create-react-app my-app
+cd my-app/
+npm start 
+This will automatically open a website in your browser.
+Now have a look at the files that were created. It should look like this:
+my-app/
+  README.md
+  node_modules/
+  package.json
+  .gitignore
+  public/
+    favicon.ico
+    index.html
+  src/
+    App.css
+    App.js
+    App.test.js
+    index.css
+    index.js
+    logo.svg
+1. Editing text on the page
+Open App.js, this is your main react component. See where it says ‘Welcome to React’, change this text to something else. Save the file and look at the app in your browser. You should see your changes.
+2. Creating a new component
+Create a new file in src folder called MyComponent.js
+
+This is a simple component which says ‘Hello World!’
+To use that component in App.js we need to import it at the top of the file.
+import MyComponent from './MyComponent';
+Then you can use it as you would any other html element. Try putting it underneath h2.
+[---]
+  <h2>Welcome to React</h2>
+  <MyComponent />
+[---]
+Now when you open your browser you should see ‘Hello World’ underneath h2.
+3. Using props
+At the moment MyComponent says ‘Hello World’ but what if we want to say ‘Hello {your name}’ ? We need some way of telling our component who to greet. For this we can use props. Props are like parameters which we pass to our component.
+[---]
+  <MyComponent name="Agata" />
+[---]
+Now we have access to our name prop inside MyComponent.
+We can use it like this:
+
+4. Using state and methods
+In class component, for example App.js we can use state to store information about our component.
+
+State is an object and YOU can give it initial values in the constructor, e.g
+this.state = { isOn: true };
+You can access state in the render method using this.state, for example if we want to use the isOn property we get it from this.state.isOn
+The button text is determined by the current value of the isOn property.
+<button>{ this.state.isOn ? 'On' : 'Off' }</button>
+The above example is an inline if statement. You can read about it here.
+OnClick function calls the toggle method which will update our state by using this.setState().
+My favourite online react courses:
+Modern React with Redux
+React.js basics
+egghead.io courses
+Plotly Academy
+Enjoy:)
+Next tutorial is a simple todo app.

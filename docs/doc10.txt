@@ -1,0 +1,85 @@
+2 years with Angular.
+Verdict: good enough (not really)
+I’ve spent two years diving deep in angular.
+I’ve seen and touched more than 10 angular-based projects with different teams and processes.
+The first year I spent watching the framework adoption, API changes, docs improvement and community forming. A learnt the stuff from top to bottom.
+The other year was totally practical getting my hands dirty and consulting others.
+My verdict is: Angular.js is “good enough” for majority of projects, but it is not good enough for professional web app development.
+
+What do you mean by saying “professional web app”?
+When I say “professional web app” I mean the app, which is maintainable in a long run, performant in all reasonably modern browsers, has a smooth UX and is mobile-friendly.
+Professionaly-done web app is not a simple artifact, solving some problem. This is a usable product, which is pleasant to use.
+This app should be done reasonably fast with best practices applied not only inside the codebase (good design, simple concepts, easy to grasp components), but in the deployment process (CDN, minification, SEO, critical path optimizations, etc) and in the usability domain (loading speed, content-first, graceful degradation, information architecture, etc).
+Are there any use cases where Angular shines?
+Building form-based “CRUD apps”.
+Throw-away projects (prototypes, small apps).
+Slow corporate monoliths, when performance does not matter and maintenance costs are not discussed (hm, but have you looked at ExtJS?)
+And what are no-no factors for angular?
+Teams with varying experience.
+Projects, which are intended to grow.
+Lack of highly experienced frontend lead developer, who will look through the code all the time.
+Project with 5 star performance requirements.
+Sure, those things are applicable to all frameworks and projects. But Angular will bring the problems sooner and will hit you harder, then other MVC frameworks.
+It there any Working Strategy, if you are FORCED to work with angular?
+1. Taking angular for fast prototyping is OK, hack it and relax.
+2. After the prototype is proved to be the Thing-To-Go, kill the prototype. DO NOT GROW IT!
+3. Sit and analyze the design mistakes you’ve made.
+4. Start a fresh new project, preferably with other tech stack.
+5. Port the functionality from the prototype to your MVP.
+If you still need to grow your project and maintain it in the future:
+1. Accept the fact that you will suffer in the future. The lowered expectations will help you stay happy sometimes.
+1. Create a thorough guideline based on the popular things (this, this and that) covering all the use cases and patterns you can imagine.
+1. Try to keep things as loosely coupled as possible with your OOD knowledge (small objects, little direct references, reusable components).
+1. Choose either MVC or MVVM, but do not start by mixing approaches.
+1. Include “refactoring” iterations in your dev process (good interval — each 3 months).
+1. Analyze your usage patterns and use cases periodically.
+1. Create a metaframework based on angular, tailored SPECIFICALLY for your project needs and your team experience!
+Angular. The Bad Parts.
+If you are still here, then I suggest you to dive into several major specific problems in separate blog posts.
+Here is a list:
+Bad Abstractions
+Bad Performance
+Name Clashes
+Complexity
+3rd-party modules
+No “Encoded Experience”
+The good thing: those issues are addressable.
+The bad thing: you must address them sometime. It is inevitable in a large project. Nothing will help. Find the right people.
+“No! Angular is cool! You just do not know the Angular Way!”
+This is the thing I was telling others for a long time, trying to approve my dedication to a wrong thing.
+Yes, those problems are avoidable.
+But you have to spend tons of time with the framework to learn the nasty details.
+And then you have to introduce those “caution signs” in your dev process.
+And then you have to spend some time making “workarounds” to those issues.
+And hey, you will be solving the problems which framework forces upon you. Those are design decisions, and you will be fighting the design.
+This is not something you want to do when you are trying to implement performant and professional app.
+And “workarounds” is not something you want to maintain.
+Have you learned something?
+1. My main mistake is that I was too optimistic.
+Some of those problems are obvious for experienced developers right from the start, but hey, those ideas are good, the team is cool, what can be wrong?
+2. I believed that those issues will be eventually fixed.
+There are valuable discussions on github. There are tons of pull requests. There are solutions that work and fix the problem.
+The reality is: those fixes are still being discussed and not merged.
+3. Some of the problems will never be fixed for Angular 1.*
+You can hope for Angular 2.0 being done right, though ☺
+4. I believed that I can teach people do things right.
+But without the framework support you have to explain things again, and again, and again.
+Lessons for framework (and metaframework) developers
+You should have as small as possible number on abstractions.
+You should name things consistent with your “thought domain”.
+Do not mix several responsibilities in your components. Make fine-grained abstractions with well-defined roles.
+Always describe the intention for your decisions and tradeoffs in your documentation.
+Have a curated and updated reference project/examples.
+You abstractions should scale “from bottom up”.
+Start with small items and then fit them to a Composite pattern.
+Do not start with the question “How do we override it globally?”.
+Global state is pure evil.
+It’s like darkness in the horror films — you never know what problems you will have when you tread into it…
+The dataflow and data changes should be granular and localized to a single component.
+Do not make things easy to use, make your components and abstractions simple to understand.
+People should learn how to do stuff in a new and effective way, do not ADAPT to their comfort zone.
+But, I have a really great experience with Angular!
+If you really do, please, share your practices, approaches, problem solutions, components and project structure on github.
+But if you are nor really proud for for those things, please do not.
+P.S. Updates.
+You can find some good discussions in my blog and on Hacker News.

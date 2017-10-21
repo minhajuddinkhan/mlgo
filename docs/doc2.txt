@@ -1,0 +1,12 @@
+What I would recommend instead of Angular.js?
+Update: Check github.com/steida/este, the ES6 React Flux webpack gulp om-like isomorphic immutable k̶i̶t̶c̶h̶e̶n̶s̶i̶n̶k̶ t̶w̶e̶e̶t̶y̶b̶i̶r̶d̶s̶ dev stack. Future now.
+For view aka user interface, use React.js.
+For routing, use github.com/rackt/react-router, or Este.js, or anything else even onhashchange event can work. It’s up to you.
+For module loading, forget about AMD and use CommonJS. You want to leverage thousands of modules in the biggest ecosystem (npm), right? So choose webpack.github.io, browserify.org, duojs.org, or Closure Library.
+For model, use plain JSON or Backbone if you like it, or github.com/facebook/immutable-js, or anything else from React complementary tools.
+For “controller”, or better to say for structuring your app and handling data flow, use Facebook Flux. Or anything else, if your app is very simple or very specific.
+For Promises, string utilities, and everything else, use npmjs.org or bower.io. Use Bower for stuff which can not be loaded by npm.
+And for dev stack, to orchestrate all that stuff, use gulpjs.com.
+As you can see, to develop the state of the art web application right now, you don’t need Angular nor jQuery.
+My name is daniel.steigerwald.cz and I’m Google Developer Expert. Feel free to hire me.
+Update 1: In case you are curious what Este.js is. It’s my development stack build with tools I’m using for a long time. My goal is: As little of my own code as possible to limit bus factor. I prefer well known battle tested libraries mixed with the best design patterns I know.

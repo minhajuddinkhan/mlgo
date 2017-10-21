@@ -1,0 +1,26 @@
+What’s wrong with Angular 1
+Update: It’s long time I wrote this article and now I would write it differently. Programming is hard and we all do mistakes. The hard thing for me is to express disagreement in friendly and helpful tone.
+App logic and structure expressed in HTML, which is enchanting for beginners (Look’ma no JS, magic!), but terrible for real development. We are developers, we write and debug code. But Angular is HTML parser. I really don’t want to debug any string based parser instead of my code. HTML should be just a projection of app state, not a source of truth!
+Two way databinding is an anti-pattern. There are too much what-if situations. Binding from model to view is ok, but from view to model, it’s completely different story!
+Dirty checking, accessors (Ember and Backbone), Object.observe and all that stuff. Wrong! It’s slow and brittle and it will consume mobile battery like hungry dog for no reason. You don’t need it. Use Facebook Flux rather. Also, you should never model app data flow with several events spreaded over x classes, where everything listen everything. Be explicit.
+Duplicated app structure with obsolete angular.module. Almost for every app feature you have to 1) change HTML 2) change its controller.
+Angular is slow. And with dirty checking and HTML parsing always will be. You can’t fix broken design. Do I have to tell something about consequences for mobile web apps? I guess not.
+No server side rendering without obscure hacks. Never. You can’t fix broken design. Bye bye isomorphic web apps.
+Angular is hard to learn. It’s irony because Angular itself is promoted as easy framework for beginners. But it’s very complicated kind of easiness. You have to learn a lot of Angular specific patterns useful only in Angular world. Yeah, it’s result of bad design. This is both sad and ridiculous. Abstract layer can solve many problems, except problem of having too many abstract layers.
+Google does not use Angular in production for their flag apps like Gmail or Gplus.
+Vendor lock. And because Google does not use Angular in production, they can kill Angular anytime. You know that Google is still kind of agile company, not having a problem to kill any project despite it’s used by milions people.
+Will be rewriten entirely soon, which is a good thing for framework, but pain for you.
+Not everything with Angular.js is bad and team behind it is brilliant. Vojta Jína did fantastic job with new DI container. Misko Hevery wrote awesome articles about TDD and writing testable code. And more.
+But I suppose initial decisions were wrong therefore I consider Angular as dead end. Is Angular worth the risk? No.
+Feel free to correct me.
+Update 1: Almost everything I wrote is true also for Polymer. Maybe I should write an article: “What actually Polymer is, and should I use it?”. tl;dr: Polymer is integration point and tool for quick mashups. Not app architecture solution.
+Update 2: The reason I wrote this article is because at my courses I have to unlearn people using Angular in the same way how Angular had to unlearn people using jQuery. Yes, we all were there, and now it’s time to move :-)
+Update 3: What I would recommend instead of Angular.
+Update 4: Another points of view:
+medium.com/@housecor/angular-2-versus-react-there-will-be-blood-66595faafd51#.b6pp7v47d
+developers.mobileapptracking.com/addressing-angular-weaknesses-with-react-and-flux
+larseidnes.com/2014/11/05/angularjs-the-bad-
+blog.dantup.com/2014/08/you-have-ruined-html
+medium.com/@mnemon1ck/why-you-should-not-use-angularjs-1df5ddf6fc99
+medium.com/@gilbox/how-can-react-and-flux-help-us-create-better-stronger-faster-angular-applications-639247898fb
+www.quirksmode.org/blog/archives/2015/01/the_problem_wit.html

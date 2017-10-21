@@ -1,0 +1,87 @@
+A useful wrapper for MobX and Firebase
+I recently started to build several projects in React and React Native. The first one is a fitness app. The second on is a premium starter kit for React Native. With the third one, currently in progress, I’m trying to use the latest novelties in the space. Novelties such as the wonderful Material UI v1-beta. So when Firebase announced its latest baby, Cloud Firestore, I started to migrate my code to the new product. While doing so, I noticed a redundancy when doing the data binding between MobX and Firebase as well as an opportunity to factor it.
+If you use Firestore with React and MobX, a big chunk of your code is likely following the pattern below.
+@observer
+class MyComponent extends Component<MyComponentProps, {}> {
+    render() {
+        const {loading, data} = this.store;
+        if (loading) {
+            return <LoadingIndicator />;
+        } else if (!data) {
+            return <NotFound />;
+        } else {
+            return <DisplayData {...{data}} />;
+        }
+    }
+}
+When the user load a screen, you request the necessary data from Firebase. While waiting for the answer, you are likely to display a loading indicator of some kind. The data might not be found or an error might happen. In that case, you need to display a status message to the user, typically a “not found” or error screen. If the data is successfully delivered, you can finally display the component. This means that there can be a lot of redundant code for every screen of your app. The code snippet below is a typical example of how this flow looks like.
+@observable loading = true;
+@observable data: Data;
+
+async componentWillMount() {
+    try {
+        const snapshot = await fb.doc(`collection/doc`).get();
+        if (snapshot.exists) {
+            this.data = snapshot.data();
+        }
+    } catch(e) {
+        // There can be some extra error processing
+    }
+    this.loading = false;
+}
+However this logic we just described can be captured by the following interface:
+interface FireDocument<T> {
+        loading(): boolean;
+        exists(): boolean;
+        get(): T;
+}
+And below is an example of this interface in action.
+@observer
+class MyComponent extends Component<MyComponentProps, {}> {
+
+    store: FireDocument<Data>;
+    
+    componentWillMount() {
+        this.store = new FireDocument(fb.doc(`collection/doc`));
+    }
+    
+    render() {
+        const {store} = this;
+        if (store.loading()) {
+            return <LoadingIndicator />;
+        } else if (!store.exists()) {
+            return <NotFound />;
+        } else {
+            return <DisplayData {...{data}} />;
+        }
+    }
+}
+Pretty slick right? I published an implementation of FireDocument and FireCollection here. Please let me know if this is useful to you and if you would like me to publish this as a proper NPM package.
+Filter & Map
+The FireCollection is almost identical to FireDocument. It takes a query snapshot as argument.
+const query = firebase.db.collection(`collection`)
+                                .where("prop", "==", "value");
+this.store = New FireCollection(query);
+When dealing with collections, there are a couple some minor things to consider. You might want to filter some of the items on the client side and transform the result to another representation.
+this.store = New FireCollection(query);
+this.store.setFilter(doc => doc.data().prop === true);
+this.store.setTransform(docs => ({
+  docs: docs.map(doc => doc.data())
+}));
+Do you find this wrapper useful? Should I publish it as proper package? What are the other possible ways to integrate Firestore and MobX together?
+One last question
+This package takes care of the data binding part of the equation. What about the rendering? Maybe we can build a decorator that would make our previous example look like this:
+const config = {
+  Loading: <LoadingIndicator />,
+  notFound: <PageNotFound />,
+  resolve: (routerParams) => `users/${routerParams.uid}`
+};
+
+@bindDocument<User>(config)
+class User extends Component<UserProps, {}> {
+    render() {
+        const {user} = this.store;
+        return <div>Hello ${user.name}</div>;
+    }
+}
+Could a decorator like this one be useful? I’m looking forward to read your thoughts on this topic.

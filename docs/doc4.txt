@@ -1,0 +1,109 @@
+From AngularJS to React: The Isomorphic Way
+
+Péter Márton's Picture by Péter Márton(@slashdotpeter), CTO at RisingStack, microservices and brewing beer with Node.js
+Last week we were working on making our website indexable for search engines. This is the story of rewriting it and the summary of what we have learnt.
+
+Background
+
+Two months ago when we created RisingStack.com we had to decide what kind of technologies we wanted to use on our website. We only had a few static pages with some event tracking. So it was very simple, but we wanted to keep it scalable and as fast as possible.
+Our team is quite experienced in AngularJS so it seemed reasonable to choose Angular on the frontend side.
+
+Please note, that this article is not about why React or AngularJS is better. It always depends on your use case.
+
+The "Angular way"
+
+AngularJS is a pretty cool framework by Google - it provides many great features like routing and two-way data binding to supercharge your development and create testable applications.
+
+Angular helps creating single page applications and renders the content on the client-side - but search robots without JavaScript support cannot index your content.
+It can be a serious problem from a SEO point of view. Especially when you want to make your freshly founded Node.js company well known :)
+
+Angular site without JavaScript
+Our Angular site without JavaScript
+
+Koa-prerender
+
+At RisingStack, we do not like half measures, and we wanted to fix this - this is when prerender.io came into the picture. It is an external service (also an open source project) that renders your site on an external server with a headless browser and sends the result back in HTML.
+It makes your site readable for most search engines but also breaks your AngularJS bindings so you cannot use it for real human users.
+
+Because our site uses Koa, the generator based Node.js framework which is not supported by prerender.io, we had to implement it ourself.
+So RisingStack released a koa-prerender middleware for Koa.
+In a nutshell: it detects the crawlers from the request parameters (_escaped_fragment_, user-agent etc.), then calls the external prerender service and responds with the static HTML content.
+
+We were happy because our site was finally reachable for most search engines like Google and Yahoo but still not for all. Also the user-agents can change, and we do not want to maintain it. We kept looking for a better solution.
+
+Our Angular site without JavaScript
+Our Angular site without JavaScript but with Koa-prerender
+
+Isomorphic JavaScript
+
+We wanted to have something that renders our content on the server-side at the first load, but provides the experience of the SPA applications after that.
+We needed something that can render both on the client and server side and share the application state between the two sides. So the client should continue from the point where the server finished its job.
+To implement this kind of architecture the code base has to be common on the server and client side (Browserify/Webpack) and the application also has to be able to render on both sides.
+
+"Browserify lets you require('modules') in the browser by bundling up all of your dependencies." - browserify.org
+
+This means practically that you can use the Node.js dependency system and npm packages in the browser. For example: superagent for AJAX requests, async for better flow control, etc.
+
+Isomorphic JavaScript architecture
+Isomorphic JavaScript architecture, Source: AirBnb Nerds
+
+If you would like to read more about isomorphic applications don't miss AirBnb's article: Isomorphic JavaScript: The Future of Web Apps.
+
+React
+
+"A JavaScript library for building user interfaces." - React
+
+React provides high performance client and server side rendering with a one-way flow for data binding. ReactJS is open source and built by the Facebook Engineering team.
+
+Because React is not a framework you should extend it with other solutions like the Flux application architecture by Facebook.
+
+About Flux
+"Flux eschews MVC in favor of a unidirectional data flow. When a user interacts with a React view, the view propagates an action through a central dispatcher, to the various stores that hold the application's data and business logic, which updates all of the views that are affected. This works especially well with React's declarative programming style, which allows the store to send updates without specifying how to transition views between states." - Flux docs
+
+Flux architecture
+The flux architecture, source: http://facebook.github.io/
+
+React + Flux + Koa = isomorphic goodness
+
+After we have decided that we will create our isomorphic application with React and Flux, we started to look for ideas, samples from others.
+Finally we started to build our site based on Yahoo's flux-examples.
+
+Their flux-examples provides sample code for two Node.js isomorphic applications with routing and Express.
+
+The idea behind the example is very simple, it writes Javascript code that is runnable both on the server and on the client side using Webpack (we changed Webpack to Browserify).
+
+The main concept behind the isomorphic achitecture is the following:
+The application state and code is shared between your browser and the server.
+After the server has received the request it creates a new flux-react application instance and renders the view then passes the state of the storages (app) into the rendered HTML output: <script>var STATE = ...</script>. The server responds with this rendered file.
+
+The browser loads the same code (built with Browserify/Webpack) and bootstraps the application from the shared state. (shared by the server and injected into the global/window scope). This means that our application can continue from the point where the server has finished.
+
+The user gets a fully rendered site at the first load like in the old times, but also able to continue the surfing with a super fast SPA application.
+Because the site content is viewable without JavaScript, the search engines can index it.
+
+(RisingStack.com uses Koa, so we had to migrate some middlewares which we are going to publish soon in the RisingStack GitHub repository.)
+
+React site
+Our React site without JavaScript
+
+Conclusion
+
+The biggest win for us here is that we finally have an indexable isomorphic SPA application. It wasn't our top priority, but now our site can work without JavaScript for the human users too.
+
+Still, the point of this post is not that React is superior to AngularJS - only that React is better in some cases and vica versa. It always depends on your use-case.
+
+They can also live in symbiosis, a good example for this is the ngReactGrid project.
+
+That's it for now, we are very excited about what will bring the isomorphic era for the web development and Node.js.
+
+If you have something similar, it would be great to hear your story. Ping us on our Twitter channel: @RisingStack
+
+UPDATE:
+Just published a full isomorphic example:
+
+Node.js (Koa + MongoDB) API: https://github.com/brewfactory/BrewCore
+React client: https://github.com/brewfactory/BrewUI
+Working demo: https://brewcore-demo.herokuapp.com
+Need help in developing your application?
+
+RisingStack provides JavaScript development and consulting services - ping us if you need a helping hand!

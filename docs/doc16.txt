@@ -1,0 +1,36 @@
+Error Boundaries in React 16
+React 16 is here and it brings lots of exciting changes. One of the features that got me excited is better error handling. Previously, runtime errors during rendering could put React in a broken state.
+With React 16, instead of unmounting the whole app every time there’s an error, you can use error boundaries. Think of error boundaries like try-catch statements, but for React components.
+Error boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of the crashed component tree.
+A class component becomes an error boundary if it defines a new lifecycle method called componentDidCatch(error, info).
+With error boundaries, even if one of your component’s results in an error, the entire react app would not get unmounted and instead only the erroneous component would display a fallback UI and the entire app would still be fully functional.
+To demonstrate the usage of an error boundary in a React App, we would be taking an example of an e-commerce website which has a product listing page to display what all products are available for sale.
+The final page would look something like this:-
+
+If you were to notice the last product card, it shows a kind of an error template. Because of Error Boundaries in React 16, we were able to place a fallback UI template for that particular component and still render the entire app.
+An Error Boundary class component can be created in the following manner:-
+
+And we can then wrap any of our component’s inside Error Boundary component to catch error’s and display a fallback UI.
+For example:-
+<ErrorBoundary>
+  <ProductCard />
+</ErrorBoundary>
+The componentDidCatch() method works like a JavaScript catch {} block, but for components. Only class components can be error boundaries.
+Inside componentDidCatch() we set the state hasError to true and then inside our render method based on whether hasError is true or false we render either the fallback UI or the React Component’s that we wanted to render as children’s.
+For our app we have primarily three components:-
+ProductList Component ( Smart Component)
+Product Component (Presentational Component)
+Header Component (Presentational Component)
+For styling I am using React Toolbox.
+The code for the ProductList Component is as follows:-
+
+As you can see the Product Component is wrapped inside Error Boundary.
+And the code for Product component is:-
+
+In the above Product.js code we are calling props.product.name.toUpperCase()
+So whenever a product has no name to it, then the toUpperCase function would be called with undefined and would result in an error which would eventually result in unmounting of the entire react app.
+But with Error Boundary in place, we can catch these error’s and render a fallback UI like the one below:-
+
+I hope this demo helps in understanding Error Boundaries of React 16.
+React 16 has many more great features shipped in and I would be discussing more about them in my next article.
+The entire code for the above demo app can be found on my github repo, the link for the same is:-
